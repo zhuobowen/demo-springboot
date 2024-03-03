@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/quartz?useUnicode=true&characterEncoding=utf-8&useSSL=false&nullCatalogMeansCurrent=true&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # quartz任务配置
+  quartz:
+    auto-startup: true
+    startup-delay: 0s
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceName: clusteredScheduler
+            instanceId: AUTO
+          jobStore:
+            selectWithLockSQL: SELECT * FROM {0}LOCKS UPDLOCK WHERE LOCK_NAME = ?
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+            tablePrefix: QRTZ_
+            isClustered: false # 打开集群配置
+            clusterCheckinInterval: 2000 # 设置集群检查间隔20s
+            useProperties: false
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadPriority: 5
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    jdbc:
+      initialize-schema: always
