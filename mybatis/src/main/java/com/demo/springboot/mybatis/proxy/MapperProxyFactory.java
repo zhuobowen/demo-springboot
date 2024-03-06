@@ -3,9 +3,12 @@ package com.demo.springboot.mybatis.proxy;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
+/**
+ * @author zbw
+ */
 public class MapperProxyFactory<T> {
 
-    private Class<T> mapperInterface;
+    private final Class<T> mapperInterface;
 
     public MapperProxyFactory(Class<T> mapperInterface) {
         this.mapperInterface = mapperInterface;
@@ -13,9 +16,9 @@ public class MapperProxyFactory<T> {
 
     public T newInstance(Map<String, Object> sqlSession) {
         MapperProxy<T> mapperProxy = new MapperProxy<>(sqlSession, mapperInterface);
-        return (T)Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-                new Class[]{mapperInterface}, 
-                mapperProxy);
+        return mapperInterface.cast(Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
+                new Class[]{mapperInterface},
+                mapperProxy));
     }
 
 }
