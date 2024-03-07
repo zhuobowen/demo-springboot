@@ -18,7 +18,8 @@ public class ProxyTest {
         System.out.println(userName);
 
 
-        MapperProxyFactory<UserMapper> mapperProxyFactory = new MapperProxyFactory(UserMapper.class);
+        MapperProxyFactory<UserMapper> mapperProxyFactory =
+                new MapperProxyFactory<>(UserMapper.class);
         UserMapper userMapper1 = mapperProxyFactory.newInstance(new HashMap<>());
         String userName1 = userMapper1.queryUserName("李四");
         System.out.println(userName1);
